@@ -1,3 +1,4 @@
+require "rubygems"
 require "#{File.dirname(__FILE__)}/../lib/ninja_decorators/method_filters"
 
 module NinjaDecorators
