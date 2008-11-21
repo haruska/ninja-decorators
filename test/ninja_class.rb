@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../lib/ninja_decorators'
 
 class NinjaClass
-  include NinjaDecorators::MethodFilters
+  include NinjaDecorators
   
   attr_accessor :ret
   
