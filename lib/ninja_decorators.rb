@@ -2,7 +2,7 @@ require "rubygems"
 require "activesupport"
 
 module NinjaDecorators
-  VERSION = '0.0.1'
+  VERSION = '0.0.2'
   
   def self.included(base)
     base.extend ClassMethods
