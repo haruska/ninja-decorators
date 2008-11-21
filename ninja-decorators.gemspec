@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{ninja_decorators}
+  s.name = %q{ninja-decorators}
   s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -15,7 +15,6 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/haruska/ninja-decorators}
   s.rdoc_options = ["--main", "README.rdoc"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{ninja_decorators}
   s.rubygems_version = %q{1.3.1}
   s.summary = %q{Implements before_filter, after_filter, and around_filter decorators similar to Rails but can be used anywhere}
   s.test_files = ["test/test_helper.rb", "test/test_ninja_decorators.rb"]
