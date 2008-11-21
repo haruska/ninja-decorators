@@ -3,9 +3,9 @@ Manifest.txt
 PostInstall.txt
 README.rdoc
 Rakefile
-lib/ninja-decorators.rb
+lib/ninja_decorators.rb
 script/console
 script/destroy
 script/generate
 test/test_helper.rb
-test/test_ninja-decorators.rb
+test/test_ninja_decorators.rb
