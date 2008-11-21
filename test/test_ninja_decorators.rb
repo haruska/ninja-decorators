@@ -1,3 +1,4 @@
+require 'rubygems'
 require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestNinjaDecorators < Test::Unit::TestCase
