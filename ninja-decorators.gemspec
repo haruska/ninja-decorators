@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.1}
   s.summary = %q{Implements before_filter, after_filter, and around_filter decorators similar to Rails but can be used anywhere}
-  s.test_files = ["test/test_helper.rb", "test/test_ninja_decorators.rb"]
+  s.test_files = ["test/test_helper.rb", "test/test_ninja_decorators.rb", "test/ninja_class.rb"]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION

@@ -4,8 +4,6 @@ PostInstall.txt
 README.rdoc
 Rakefile
 lib/ninja_decorators.rb
-script/console
-script/destroy
-script/generate
 test/test_helper.rb
 test/test_ninja_decorators.rb
+test/ninja_class.rb
