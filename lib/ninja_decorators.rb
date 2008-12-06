@@ -16,29 +16,71 @@ module NinjaDecorators
       if @@delayed_alias_method_chains[meth.to_s]
         chains_arr = @@delayed_alias_method_chains.delete(meth.to_s)
         chains_arr.each do |chain|
-          self.send(:alias_method_chain, meth, chain)
+          chain.each_pair do |filter_type, filtered_method_builder|
+            ninja_method_chain meth, filter_type, &filtered_method_builder
+          end
         end
       end
     end
 
-    def around_filter(around_method, function_names)
-      function_names.each do |func|
-        define_method("#{func}_with_around_filter_wrapper") do |*args|
-          send(around_method, *args) do |*ar_args|
-            send "#{func}_without_around_filter_wrapper", *ar_args
+    def around_filter(around_method, method_names)
+      method_names.each do |meth|
+
+        # Build up a proc that will construct the filtered method.  Execution of the proc is delayed
+        # until we encounter the alias_method_chain call.
+        filtered_method_builder = Proc.new do
+          # Get a reference to the unfiltered method or, more accurately, the original method with
+          # all previous filters already applied.  This new filtered method builds up on the filters
+          # already applied.
+          unfiltered_method = instance_method "#{meth}_without_around_filter_wrapper"
+
+          # Define the newly filtered method.
+          define_method("#{meth}_with_around_filter_wrapper") do |*args|
+            send(around_method, *args) do |*ar_args|
+              unfiltered_method.bind(self).call(*ar_args)
+            end
           end
         end
 
-        if self.instance_methods.include?(func.to_s)
-          alias_method_chain func, :around_filter_wrapper
+        # If the method to filter has been defined already.
+        if self.instance_methods.include?(meth.to_s)
+
+          # Filter the method with around_method.
+          ninja_method_chain meth, :around_filter_wrapper, &filtered_method_builder
+
+        # If the method to filter has not been defined already, delay wrapping until it has.  
         else
-          @@delayed_alias_method_chains[func.to_s] ||= []
-          @@delayed_alias_method_chains[func.to_s] << :around_filter_wrapper
+          @@delayed_alias_method_chains[meth.to_s] ||= []
+          @@delayed_alias_method_chains[meth.to_s] << {:around_filter_wrapper => filtered_method_builder}
         end
-      
       end
     end
-  
+
+    # This was largely lifted from ActiveSupport's alias_method_chain.  We needed to be able to yield to a block
+    # that could construct the with_* methods while having access to the aliased without_* methods.
+    def ninja_method_chain(target, feature)
+      # Strip out punctuation on predicates or bang methods since
+      # e.g. target?_without_feature is not a valid method name.
+      aliased_target, punctuation = target.to_s.sub(/([?!=])$/, ''), $1
+
+      with_method, without_method = "#{aliased_target}_with_#{feature}#{punctuation}", "#{aliased_target}_without_#{feature}#{punctuation}"
+
+      alias_method without_method, target
+
+      yield if block_given?
+
+      alias_method target, with_method
+
+      case
+      when public_method_defined?(without_method)
+        public target
+      when protected_method_defined?(without_method)
+        protected target
+      when private_method_defined?(without_method)
+        private target
+      end
+    end
+
   end
   
 end
