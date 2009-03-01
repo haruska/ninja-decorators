@@ -9,12 +9,14 @@ module NinjaDecorators
   end
 
   module ClassMethods
-  
-    @@delayed_alias_method_chains = {}
+
+    def delayed_alias_method_chains
+      @delayed_alias_method_chains ||= {}
+    end
   
     def method_added(meth)
-      if @@delayed_alias_method_chains[meth.to_s]
-        chains_arr = @@delayed_alias_method_chains.delete(meth.to_s)
+      if delayed_alias_method_chains[meth.to_s]
+        chains_arr = delayed_alias_method_chains.delete(meth.to_s)
         chains_arr.each do |chain|
           chain.each_pair do |filter_type, filtered_method_builder|
             ninja_method_chain meth, filter_type, &filtered_method_builder
@@ -50,8 +52,8 @@ module NinjaDecorators
 
         # If the method to filter has not been defined already, delay wrapping until it has.  
         else
-          @@delayed_alias_method_chains[meth.to_s] ||= []
-          @@delayed_alias_method_chains[meth.to_s] << {:around_filter_wrapper => filtered_method_builder}
+          delayed_alias_method_chains[meth.to_s] ||= []
+          delayed_alias_method_chains[meth.to_s] << {:around_filter_wrapper => filtered_method_builder}
         end
       end
     end
