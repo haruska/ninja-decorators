@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{ninja-decorators}
-  s.version = "0.0.0"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jason Haruska", "Kevin Menard"]
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
     "PostInstall.txt",
     "README.rdoc",
     "Rakefile",
+    "VERSION.yml",
     "lib/ninja_decorators.rb",
     "test/ninja_class.rb",
     "test/test_helper.rb",
