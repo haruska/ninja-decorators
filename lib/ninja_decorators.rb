@@ -56,6 +56,38 @@ module NinjaDecorators
       end
     end
 
+    def before_filter(before_method, method_names)
+      method_names.each do |meth|
+
+        # Build up a proc that will construct the filtered method.  Execution of the proc is delayed
+        # until we encounter the alias_method_chain call.
+        filtered_method_builder = Proc.new do
+          # Get a reference to the unfiltered method or, more accurately, the original method with
+          # all previous filters already applied.  This new filtered method builds up on the filters
+          # already applied.
+          unfiltered_method = instance_method "#{meth}_without_before_filter_wrapper"
+
+          # Define the newly filtered method.
+          define_method("#{meth}_with_before_filter_wrapper") do |*args|
+            send(before_method, *args)
+            unfiltered_method.bind(self).call(*args)
+          end
+        end
+
+        # If the method to filter has been defined already.
+        if self.instance_methods.include?(meth.to_s)
+
+          # Filter the method with before_method.
+          ninja_method_chain meth, :before_filter_wrapper, &filtered_method_builder
+
+        # If the method to filter has not been defined already, delay wrapping until it has.
+        else
+          delayed_alias_method_chains[meth.to_s] ||= []
+          delayed_alias_method_chains[meth.to_s] << {:before_filter_wrapper => filtered_method_builder}
+        end
+      end
+    end
+
     # This was largely lifted from ActiveSupport's alias_method_chain.  We needed to be able to yield to a block
     # that could construct the with_* methods while having access to the aliased without_* methods.
     def ninja_method_chain(target, feature)
