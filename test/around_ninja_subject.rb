@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../lib/ninja_decorators'
 
-class NinjaClass
+class AroundNinjaSubject
   include NinjaDecorators
 
   around_filter :common_around, [:foo, :bar, :nested]

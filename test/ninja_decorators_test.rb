@@ -1,6 +1,6 @@
 require 'rubygems'
 require File.dirname(__FILE__) + '/test_helper.rb'
-require 'ninja_class'
+require 'around_ninja_subject'
 
 class TestNinjaDecorators < Test::Unit::TestCase
 
@@ -8,14 +8,14 @@ class TestNinjaDecorators < Test::Unit::TestCase
   end
   
   def test_simple_around_filter
-    ninja = NinjaClass.new
+    ninja = AroundNinjaSubject.new
     assert_equal "common foo around", ninja.foo
     ninja.ret = ""
     assert_equal "common bar around", ninja.bar
   end
   
   def test_nested_around_filter
-    ninja = NinjaClass.new
+    ninja = AroundNinjaSubject.new
     assert_equal "nesting common nested around completed", ninja.nested
   end
 end

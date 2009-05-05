@@ -19,9 +19,9 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION.yml",
     "lib/ninja_decorators.rb",
-    "test/ninja_class.rb",
+    "test/around_ninja_subject.rb",
     "test/test_helper.rb",
-    "test/test_ninja_decorators.rb"
+    "test/ninja_decorators_test.rb"
   ]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/haruska/ninja-decorators/}
@@ -30,9 +30,9 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.2}
   s.summary = %q{before_filter, after_filter, and around_filter for ruby without rails}
   s.test_files = [
-    "test/ninja_class.rb",
+    "test/around_ninja_subject.rb",
     "test/test_helper.rb",
-    "test/test_ninja_decorators.rb"
+    "test/ninja_decorators_test.rb"
   ]
 
   if s.respond_to? :specification_version then
