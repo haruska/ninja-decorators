@@ -2,6 +2,7 @@ require 'rubygems'
 require File.dirname(__FILE__) + '/test_helper.rb'
 require 'around_ninja_subject'
 require 'before_ninja_subject'
+require 'after_ninja_subject'
 
 class TestNinjaDecorators < Test::Unit::TestCase
 
@@ -30,5 +31,17 @@ class TestNinjaDecorators < Test::Unit::TestCase
   def test_nested_before_filter
     ninja = BeforeNinjaSubject.new
     assert_equal "nesting  completedcommon  aroundnested", ninja.nested
+  end
+
+  def test_simple_after_filter
+    ninja = AfterNinjaSubject.new
+    assert_equal "foocommon  around", ninja.foo
+    ninja.ret = ""
+    assert_equal "barcommon  around", ninja.bar
+  end
+
+  def test_nested_after_filter
+    ninja = AfterNinjaSubject.new
+    assert_equal "nestedcommon  aroundnesting  completed", ninja.nested
   end
 end

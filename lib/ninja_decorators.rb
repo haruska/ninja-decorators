@@ -31,6 +31,10 @@ module NinjaDecorators
       filter_factory(before_method, method_names, :before)
     end
 
+    def after_filter(after_method, method_names)
+      filter_factory(after_method, method_names, :after)
+    end
+
     def filter_factory(filter_method, method_names, filter_type)
       method_names.each do |meth|
 
@@ -55,6 +59,12 @@ module NinjaDecorators
                 send(filter_method, *args) do |*ar_args|
                   unfiltered_method.bind(self).call(*ar_args)
                 end
+              end
+
+            when :after
+              define_method("#{meth}_with_after_filter_wrapper") do |*args|
+                unfiltered_method.bind(self).call(*args)
+                send(filter_method, *args)
               end
           end
         end
