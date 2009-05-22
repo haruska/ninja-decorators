@@ -1,5 +1,4 @@
 require "rubygems"
-require "activesupport"
 
 module NinjaDecorators
   def self.included(base)
