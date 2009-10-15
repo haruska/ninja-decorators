@@ -17,45 +17,42 @@ syntax to :only and :except filters similar to Rails
 Similar to Rails, the following will execute the method common_around around
 both the foo and bar methods:
 
-<pre>
-require 'rubygems'
-require 'ninja_decorators'
+  require 'rubygems'
+  require 'ninja_decorators'
 
-class NinjaClass
-  include NinjaDecorators
+  class NinjaClass
+    include NinjaDecorators
 
-  attr_accessor :ret
+    attr_accessor :ret
 
-  around_filter :common_around, [:foo, :bar]
+    around_filter :common_around, [:foo, :bar]
 
-  def foo
-    @ret += "foo"
+    def foo
+      @ret += "foo"
+    end
+
+    def bar
+      @ret += "bar"
+    end
+
+    private
+
+    def common_around
+      @ret = "common "
+      yield
+      @ret += " around"
+    end
   end
-
-  def bar
-    @ret += "bar"
-  end
-
-  private
-
-  def common_around
-    @ret = "common "
-    yield
-    @ret += " around"
-  end
-end
-</pre>
 
 produces
 
-<pre>
-irb(main):076:0> n = NinjaClass.new
-=> #
-irb(main):077:0> n.bar
-=> "common bar around"
-irb(main):078:0> n.foo
-=> "common foo around"
-</pre>
+  irb(main):076:0> n = NinjaClass.new
+  => #
+  irb(main):077:0> n.bar
+  => "common bar around"
+  irb(main):078:0> n.foo
+  => "common foo around"
+
 
 == REQUIREMENTS:
 
