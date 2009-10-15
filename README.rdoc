@@ -17,6 +17,7 @@ syntax to :only and :except filters similar to Rails
 Similar to Rails, the following will execute the method common_around around
 both the foo and bar methods:
 
+<pre>
 require 'rubygems'
 require 'ninja_decorators'
 
@@ -43,16 +44,18 @@ class NinjaClass
     @ret += " around"
   end
 end
+</pre>
 
 produces
 
+<pre>
 irb(main):076:0> n = NinjaClass.new
 => #
 irb(main):077:0> n.bar
 => "common bar around"
 irb(main):078:0> n.foo
 => "common foo around"
-
+</pre>
 
 == REQUIREMENTS:
 
